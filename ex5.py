@@ -2,7 +2,6 @@ import json
 import os
 
 
-
 def names_of_registered_students(input_json_path, course_name):
     """
     This function returns a list of the names of the students who registered for
@@ -15,7 +14,7 @@ def names_of_registered_students(input_json_path, course_name):
     return_list = []
     with open(input_json_path) as f:
         data = json.load(f)
-    for id,student in data.items():
+    for student in data.values():
         if course_name in student['registered_courses']:
             return_list.append(student['student_name'])
 
@@ -50,8 +49,6 @@ def enrollment_numbers(input_json_path, output_file_path):
             g.write('\n')
 
 
-
-
 def courses_for_lecturers(json_directory_path, output_json_path):
     """
     This function writes the courses given by each lecturer in json format.
@@ -65,8 +62,8 @@ def courses_for_lecturers(json_directory_path, output_json_path):
     for filename in os.listdir(directory):
         curr_file_path = os.path.join(directory, filename)
         if os.path.isfile(curr_file_path):
-            if curr_file_path.endswith('json'):
-                with open(curr_file_path) as f_path :
+            if filename.lower().endswith('json'):
+                with open(curr_file_path) as f_path:
 
                     data = json.load(f_path)
                     for course_id in data.keys():
@@ -79,6 +76,5 @@ def courses_for_lecturers(json_directory_path, output_json_path):
                             else:
                                 lecturers_dict[lecturer] = [data[course_id]['course_name']]
 
-
-    with open(output_json_path,'w') as outPath:
-        json.dump(lecturers_dict,outPath,indent=4)
+    with open(output_json_path, 'w') as outPath:
+        json.dump(lecturers_dict, outPath, indent=4)
